@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  dynamodb-local:
+    image: 'amazon/dynamodb-local:latest'
+    container_name: dynamodb-local
+    ports:
+      - '8000:8000'
+    volumes:
+      - './dynamodb:/home/dynamodblocal/data'
+    working_dir: /home/dynamodblocal
+    command: '-jar DynamoDBLocal.jar -sharedDb -dbPath ./data'
+
+  app-node:
+    container_name: app-node
+    depends_on:
+      - 'dynamodb-local'
+    build: './app/'
+    links:
+      - 'dynamodb-local'
+    volumes:
+      - ./app/src:/usr/app/src
+      - ~/.aws:/root/.aws:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    # environment:
+    #   AWS_ACCESS_KEY_ID: 'DUMMYIDEXAMPLE'
+    #   AWS_SECRET_ACCESS_KEY: 'DUMMYEXAMPLEKEY'
+    #   AWS_DEFAULT_REGION: 'ap-northeast-1'
+    tty: true
+    stdin_open: true
+    # command: 'aws dynamodb list-tables --endpoint-url http://dynamodb-local:8000'
