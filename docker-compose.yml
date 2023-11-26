@@ -22,10 +22,10 @@ services:
       - ~/.aws:/root/.aws:ro
       - /var/run/docker.sock:/var/run/docker.sock
     restart: always
+    tty: true
+    stdin_open: true
     # environment:
     #   AWS_ACCESS_KEY_ID: 'DUMMYIDEXAMPLE'
     #   AWS_SECRET_ACCESS_KEY: 'DUMMYEXAMPLEKEY'
     #   AWS_DEFAULT_REGION: 'ap-northeast-1'
-    tty: true
-    stdin_open: true
     # command: 'aws dynamodb list-tables --endpoint-url http://dynamodb-local:8000'
